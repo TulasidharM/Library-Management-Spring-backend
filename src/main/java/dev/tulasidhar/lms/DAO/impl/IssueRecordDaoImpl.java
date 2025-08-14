@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import dev.tulasidhar.lms.model.Book;
 import dev.tulasidhar.lms.model.Issue_Records;
 import dev.tulasidhar.lms.model.OverDueList;
@@ -20,6 +22,8 @@ import dev.tulasidhar.lms.Exceptions.DBConstrainsException;
 import dev.tulasidhar.lms.Exceptions.IdNotExistException;
 import dev.tulasidhar.lms.Utils.DatabaseUtil;
 
+
+@Component
 public class IssueRecordDaoImpl implements IssueRecordDao {
 
     private static final String url = DatabaseUtil.getUrl();

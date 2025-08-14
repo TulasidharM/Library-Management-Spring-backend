@@ -10,10 +10,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import dev.tulasidhar.lms.DAO.BookDao;
 import dev.tulasidhar.lms.Utils.DatabaseUtil;
 import dev.tulasidhar.lms.model.Book;
 
+
+@Component
 public class DataBookDao implements BookDao {
 
     private static final String url = DatabaseUtil.getUrl();

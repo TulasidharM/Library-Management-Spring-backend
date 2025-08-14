@@ -4,19 +4,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import dev.tulasidhar.lms.Utils.ValidatorsUtil;
 import dev.tulasidhar.lms.DAO.BookDao;
-import dev.tulasidhar.lms.DAO.impl.DataBookDao;
 import dev.tulasidhar.lms.Exceptions.DBConstrainsException;
 import dev.tulasidhar.lms.model.Book;
 import dev.tulasidhar.lms.service.BookService;
 
+@Service
 public class BookServiceImpl implements BookService{
+	
+	@Autowired
 	private BookDao bookDao;
 	
-	public BookServiceImpl() {
-		this.bookDao = new DataBookDao();
-	}
+//	public BookServiceImpl() {
+//		this.bookDao = new DataBookDao();
+//	}
 	
 
 	@Override

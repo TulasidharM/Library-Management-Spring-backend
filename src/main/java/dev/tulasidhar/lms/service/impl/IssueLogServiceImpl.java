@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import dev.tulasidhar.lms.Utils.ValidatorsUtil;
 import dev.tulasidhar.lms.DAO.*;
 import dev.tulasidhar.lms.Exceptions.IdNotExistException;
@@ -20,6 +22,8 @@ import dev.tulasidhar.lms.model.*;
 
 import dev.tulasidhar.lms.service.IssueLogService;
 
+
+@Service
 public class IssueLogServiceImpl implements IssueLogService{
 
 	private BookDao bookDao;

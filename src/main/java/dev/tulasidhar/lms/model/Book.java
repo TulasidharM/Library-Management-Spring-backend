@@ -1,5 +1,7 @@
 package dev.tulasidhar.lms.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +10,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Book {
-	private int book_Id;
+	
+	@NotNull int book_Id;
+	@NotBlank(message = "Book title should not be empty")
 	private String book_Title;
+	
+	@NotBlank(message= "Book Author should not be empty")
 	private String book_Author;
+	
+	@NotBlank
 	private String book_Category;
+	
 	private char book_Status;
+	
 	private char book_Availability;
 	
 	
@@ -22,7 +32,6 @@ public class Book {
 		this.book_Category=book_Category;
 		this.book_Status=BookStatus.ACTIVE.getCode();
 		this.book_Availability=BookAvailability.AVAILABLE.getCode();
-		
 	}
 	
 }

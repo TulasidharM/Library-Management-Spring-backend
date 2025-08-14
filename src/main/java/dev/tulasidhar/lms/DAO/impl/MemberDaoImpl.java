@@ -9,12 +9,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import dev.tulasidhar.lms.model.Member;
 import dev.tulasidhar.lms.DAO.MemberDao;
 import dev.tulasidhar.lms.Exceptions.DBConstrainsException;
 import dev.tulasidhar.lms.Utils.DatabaseUtil;
 
 
+@Component
 public class MemberDaoImpl implements MemberDao {
 
     private static final String url = DatabaseUtil.getUrl();

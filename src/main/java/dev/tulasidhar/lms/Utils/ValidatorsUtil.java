@@ -32,6 +32,7 @@ public class ValidatorsUtil {
 		String bookCategory=book.getBook_Category().trim();
 		char bookStatus=book.getBook_Status();
 		char bookAvailability=book.getBook_Availability();
+		
 		if(bookTitle == null || bookAuthor == null || bookCategory == null || bookStatus == '\u0000' || bookAvailability == '\u0000' ||  bookTitle.isEmpty() || bookAuthor.isEmpty() || bookCategory.isEmpty() ) {
 			throw new DBConstrainsException("Book fields cannot be empty");
 		}

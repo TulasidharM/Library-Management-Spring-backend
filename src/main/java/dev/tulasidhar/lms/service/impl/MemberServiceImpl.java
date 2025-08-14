@@ -3,12 +3,16 @@ package dev.tulasidhar.lms.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import dev.tulasidhar.lms.Utils.ValidatorsUtil;
 import dev.tulasidhar.lms.DAO.MemberDao;
 import dev.tulasidhar.lms.DAO.impl.MemberDaoImpl;
 import dev.tulasidhar.lms.model.Member;
 import dev.tulasidhar.lms.service.MemberService;
 
+
+@Service
 public class MemberServiceImpl implements MemberService{
 
 	MemberDao memberDao;

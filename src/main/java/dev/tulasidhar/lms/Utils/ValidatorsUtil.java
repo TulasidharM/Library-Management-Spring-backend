@@ -14,8 +14,10 @@ import dev.tulasidhar.lms.model.Member;
 
 
 public class ValidatorsUtil {
-
-
+	//TODO:VALIDATIONS
+	//TODO:EXCEPTION HANDLING
+	//TODO: USE JDBC thing of spring boot
+	
 	private static BookDao bookDao;
 	private static MemberDao memberDao;
 	private static IssueRecordDao issueRecordDao;

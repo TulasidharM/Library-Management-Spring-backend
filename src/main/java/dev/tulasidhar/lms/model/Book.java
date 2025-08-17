@@ -33,5 +33,14 @@ public class Book {
 		this.book_Status=BookStatus.ACTIVE.getCode();
 		this.book_Availability=BookAvailability.AVAILABLE.getCode();
 	}
+
+
+	@Override
+	public String toString() {
+		return "Book [book_Id=" + book_Id + ", book_Title=" + book_Title + ", book_Author=" + book_Author
+				+ ", book_Category=" + book_Category + ", book_Status=" + book_Status + ", book_Availability="
+				+ book_Availability + "]";
+	}
+	
 	
 }

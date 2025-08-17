@@ -32,6 +32,12 @@ public class Issue_Records {
 		this.issueDate = new Date(new java.util.Date().getTime());
 		this.returnDate = null;
 	}
+
+	@Override
+	public String toString() {
+		return "Issue_Records [issueId=" + issueId + ", bookId=" + bookId + ", memberId=" + memberId + ", status="
+				+ status + ", issueDate=" + issueDate + ", returnDate=" + returnDate + "]";
+	}
 	
 	
 	

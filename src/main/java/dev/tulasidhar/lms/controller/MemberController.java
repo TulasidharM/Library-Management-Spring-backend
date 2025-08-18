@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.tulasidhar.lms.Exceptions.ValidationException;
 import dev.tulasidhar.lms.model.Member;
 import dev.tulasidhar.lms.service.MemberService;
 import jakarta.validation.Valid;
@@ -26,13 +27,13 @@ public class MemberController {
     }
 
     @PostMapping(value = "/addmember")
-    public int addMember(@RequestBody @Valid Member member) {
+    public int addMember(@RequestBody @Valid Member member) throws ValidationException {
         memberService.addNewMember(member);
         return 0;
     }
 
     @PutMapping("/updatemember")
-    public int updateMember(@RequestBody @Valid Member member) {
+    public int updateMember(@RequestBody @Valid Member member) throws ValidationException {
         memberService.updateMember(member);
         return 0;
     }

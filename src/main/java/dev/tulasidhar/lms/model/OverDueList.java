@@ -1,36 +1,21 @@
 package dev.tulasidhar.lms.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OverDueList {
 	private int issueId;
 	private int bookId;
 	private String title;
 	private String memberName;
-	private Date overDueDate;
+	private LocalDate overDueDate;
 	
-	public OverDueList(int issueId, int bookId, String title, String memberName, Date overDueDate) {
-		this.issueId = issueId;
-		this.bookId = bookId;
-		this.title = title;
-		this.memberName = memberName;
-		this.overDueDate = overDueDate;
-	}
 	
-	public int getIssueId() {
-		return issueId;
-	}
-	public int getBookId() {
-		return bookId;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public String getMemberName() {
-		return memberName;
-	}
-	public Date getOverDueDate() {
-		return overDueDate;
-	}
-	
+
 }

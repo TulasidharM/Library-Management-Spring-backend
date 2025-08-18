@@ -5,11 +5,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import dev.tulasidhar.lms.Utils.ValidatorsUtil;
 import dev.tulasidhar.lms.DAO.BookDao;
-import dev.tulasidhar.lms.Exceptions.DBConstrainsException;
+import dev.tulasidhar.lms.Exceptions.NoRowsEffectedException;
+import dev.tulasidhar.lms.Exceptions.ValidationException;
 import dev.tulasidhar.lms.model.Book;
 import dev.tulasidhar.lms.service.BookService;
 
@@ -18,16 +20,19 @@ public class BookServiceImpl implements BookService{
 	
 	@Autowired
 	private BookDao bookDao;
-	
-//	public BookServiceImpl() {
-//		this.bookDao = new DataBookDao();
-//	}
-	
+
 
 	@Override
-	public void addNewBook(Book newBook) throws DBConstrainsException {
+	public int addNewBook(Book newBook) throws ValidationException, NoRowsEffectedException{
+		try {
 			ValidatorsUtil.validateBook(newBook);
-			bookDao.addBook(newBook);	
+			int rowsEffected = bookDao.addBook(newBook);
+			if(rowsEffected == 0)
+				throw new NoRowsEffectedException("Couldn't complete the task , please try again");
+			return rowsEffected;
+		}catch(DataAccessException e){
+			return 1;
+		} 	
 	}
 
 	
@@ -37,18 +42,19 @@ public class BookServiceImpl implements BookService{
 	}
 	
 	@Override
-	public void updateBookAvailability(int bookId,boolean isAvailable) {
-		bookDao.updateBookAvailability(bookId, isAvailable);
+	public int updateBookAvailability(int bookId,boolean isAvailable) throws DataAccessException{
+		return bookDao.updateBookAvailability(bookId, isAvailable);
 	}
 	
+	
 	@Override
-	public void updateBook(Book book) throws DBConstrainsException {
+	public int updateBook(Book book) throws ValidationException,DataAccessException {
 			ValidatorsUtil.validateBook(book);
-			bookDao.updateBook(book);
+			return bookDao.updateBook(book);
 	}
 	
 	//Report 
-	public Map<String,Long> getBooksByCategory() {
+	public Map<String,Long> getBooksByCategory() throws DataAccessException{
 		Map<String,Long> categoryMap = bookDao.getAllBooks().stream()
 										.collect(Collectors.groupingBy((b)->b.getBook_Category(),Collectors.counting()));
 		
@@ -56,7 +62,7 @@ public class BookServiceImpl implements BookService{
 	}
 
 	@Override
-	public Book getBookById(int id) {
+	public Book getBookById(int id) throws DataAccessException{
 		return bookDao.getBookById(id);
 	}
 }

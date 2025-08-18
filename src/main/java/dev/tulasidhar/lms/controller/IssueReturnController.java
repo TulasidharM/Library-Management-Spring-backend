@@ -36,8 +36,12 @@ public class IssueReturnController {
     
 
     @GetMapping("/searchmember")
-    public Member getMemberByEmail(@RequestParam String email) {
-        return memberService.getMemberByEmail(email);
+    public Member getMemberByEmail(@RequestParam String email) throws IdNotExistException {
+    	Member member = memberService.getMemberByEmail(email);
+    	if(member == null) {
+    		throw new IdNotExistException("Member does not exist");
+    	}
+        return member;
     }
 
     @PostMapping("/issuebook")
@@ -84,13 +88,11 @@ public class IssueReturnController {
         return issueLogService.getOverDueBooks();
     }
 
-    // Endpoint 2: Get category statistics
     @GetMapping("/category-stats")
     public Map<String, Long> getCategoryStats() {
         return bookService.getBooksByCategory();
     }
 
-    // Endpoint 3: Get member book statistics
     @GetMapping("/member-stats")
     public List<ReportMember> getMemberStats() {
         return issueLogService.booksOfMemberReport();

@@ -3,11 +3,12 @@ package dev.tulasidhar.lms.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.tulasidhar.lms.Utils.ValidatorsUtil;
 import dev.tulasidhar.lms.DAO.MemberDao;
-import dev.tulasidhar.lms.DAO.impl.MemberDaoImpl;
+import dev.tulasidhar.lms.Exceptions.ValidationException;
 import dev.tulasidhar.lms.model.Member;
 import dev.tulasidhar.lms.service.MemberService;
 
@@ -15,20 +16,15 @@ import dev.tulasidhar.lms.service.MemberService;
 @Service
 public class MemberServiceImpl implements MemberService{
 
+	@Autowired
 	MemberDao memberDao;
-	
-	public MemberServiceImpl() {
-		this.memberDao = new MemberDaoImpl();
-	}
-	
-	
-	
+	@Autowired
+	ValidatorsUtil validator;
+
     @Override
-    public void addNewMember(Member member) throws IllegalArgumentException{
-    	
-    		ValidatorsUtil.validateMember(member);
+    public void addNewMember(Member member) throws ValidationException{
+    		validator.validateMember(member);
     		memberDao.insertMember(member);
-    	
     }
     
     @Override
@@ -44,8 +40,6 @@ public class MemberServiceImpl implements MemberService{
 	    return member;
 	}
 
-
-    
 	@Override
 	public List<Member> getAllMembers() {
 		return memberDao.fetchAllMembers();
@@ -56,12 +50,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
-	public void updateMember(Member member) throws IllegalArgumentException {
-		ValidatorsUtil.validateMember(member);
+	public void updateMember(Member member) throws ValidationException {
+		validator.validateMember(member);
 		memberDao.updateMember(member);
 	}
 	
-
 	@Override
 	public Member getMemberByEmail(String email) {
 		

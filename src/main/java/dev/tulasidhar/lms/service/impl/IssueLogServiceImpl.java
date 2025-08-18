@@ -8,10 +8,12 @@ import dev.tulasidhar.lms.DAO.impl.MemberDaoImpl;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.tulasidhar.lms.Utils.ValidatorsUtil;
@@ -25,10 +27,17 @@ import dev.tulasidhar.lms.service.IssueLogService;
 
 @Service
 public class IssueLogServiceImpl implements IssueLogService{
-
+	
+	@Autowired
 	private BookDao bookDao;
+	@Autowired
 	private MemberDao memberDao;
+	@Autowired
 	private IssueRecordDao issueRecordDao;
+	
+	@Autowired
+	private ValidatorsUtil validator;
+	
 
 	public IssueLogServiceImpl() {
 		this.bookDao = new DataBookDao();
@@ -39,8 +48,7 @@ public class IssueLogServiceImpl implements IssueLogService{
 	@Override
 	public void addIssueRecord(Issue_Records newRecord) throws IdNotExistException{
 		try {
-			
-			ValidatorsUtil.validateIssueRecord(newRecord);
+			validator.validateIssueRecord(newRecord);
 			
 			issueRecordDao.addIssueRecord(newRecord);
 			bookDao.updateBookAvailability(newRecord.getBookId(), false);
@@ -71,7 +79,6 @@ public class IssueLogServiceImpl implements IssueLogService{
 										.collect(Collectors.groupingBy(
 													i-> i.getMemberId(),
 													Collectors.mapping(t -> t.getBookId() , Collectors.toList())));
-		
 		List<ReportMember> reportMembersList = map.entrySet().stream()
 						.map((e)->{
 							int memberId = e.getKey();
@@ -82,7 +89,6 @@ public class IssueLogServiceImpl implements IssueLogService{
 							return new ReportMember(memberId,memberDao.getMemberById(memberId).getMember_Name(),booksIds);
 						})
 						.collect(Collectors.toList());
-		
 		return reportMembersList;
 	}
 	
@@ -108,8 +114,13 @@ public class IssueLogServiceImpl implements IssueLogService{
 			})
 			//.distinct()
 			.map((log)->{
+				try {
 				 return bookDao.getBookById(log.getBookId());
+				}catch(RuntimeException e) {
+					return null;
+				}
 			})
+			.filter(e->e!=null)
 			.collect(Collectors.toList());
 		
 		
@@ -117,10 +128,26 @@ public class IssueLogServiceImpl implements IssueLogService{
 	}
 
 	
-	
 	public List<OverDueList> getOverDueBooks(){
-		List<OverDueList> booksDueLists=issueRecordDao.getOverdueRecords().stream().filter(record->record.getOverDueDate().before(Date.valueOf(LocalDate.now()))).collect(Collectors.toList());
-		return booksDueLists;
+		List<OverDueList> overDueList = issueRecordDao.getAllIssuedRecords().stream()
+											.filter(record->{
+												return record.getStatus()=='I' && record.getIssueDate().toLocalDate().plusDays(30).isBefore(LocalDate.now()) ;
+											})
+											.map(record->{
+												try {
+													OverDueList listItem = new OverDueList();
+													listItem.setBookId(record.getBookId());
+													listItem.setIssueId(record.getIssueId());
+													listItem.setMemberName(memberDao.getMemberById(record.getMemberId()).getMember_Name());
+													listItem.setTitle(bookDao.getBookById(record.getBookId()).getBook_Title());
+													listItem.setOverDueDate(record.getIssueDate().toLocalDate().plusDays(30));
+													return listItem;
+												}catch(RuntimeException e){
+													return null;
+												}
+											}).filter(r->r!=null)
+											.toList();
+		return overDueList;
 	}
 
 }
